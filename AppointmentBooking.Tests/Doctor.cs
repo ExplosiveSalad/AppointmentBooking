@@ -1,0 +1,9 @@
+﻿namespace AppointmentBooking.Tests
+{
+    public class Doctor
+    {
+        public string Id { get; set; }
+        public string FullName { get; set; }
+        public int AvailableSlots { get; set; }  
+    }
+}
