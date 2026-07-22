@@ -1,4 +1,4 @@
-﻿namespace AppointmentBooking.Tests
+﻿namespace AppointmentBooking
 {
     public class Doctor
     {
