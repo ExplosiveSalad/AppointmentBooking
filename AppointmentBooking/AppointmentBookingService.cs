@@ -1,15 +1,34 @@
-﻿
-
-namespace AppointmentBooking
+﻿public class AppointmentBookingService
 {
-    public class AppointmentBookingService
+    // Modified to return bool so existing tests that expect a bool compile and run.
+    public bool BookAppointment(AppointmentRequest request)
     {
-        public bool BookAppointment(AppointmentRequest request)
-        {
-            if (request.Doctor.AvailableSlots <= 0)
+        if (request == null)
             return false;
-            request.Doctor.AvailableSlots--;
-            return true;
+        if (request.Doctor == null)
+            return false;
+        if (!request.Doctor.HasAvailableSlot())
+        {
+            return false;
         }
+        request.Doctor.ReserveSlot();
+        return true;
+    }
+
+    // Optional: keep the old BookingResult-producing API if other code needs it.
+    public BookingResult BookAppointmentWithResult(AppointmentRequest request)
+    {
+        if (request == null)
+            return new BookingResult(false, "Appointment request is missing.");
+        if (!request.Doctor.HasAvailableSlot())
+        {
+            return new BookingResult(
+                false,
+                $"Appointment cannot be booked because {request.Doctor.FullName} has no available slots.");
+        }
+        request.Doctor.ReserveSlot();
+        return new BookingResult(
+            true,
+            $"Appointment booked successfully for {request.Patient.DisplayName} with {request.Doctor.FullName}.");
     }
 }
